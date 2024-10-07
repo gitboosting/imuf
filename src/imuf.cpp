@@ -22,6 +22,19 @@ quat<double> numericVecToQuat(NumericVector v) {
   return quat<double> { v[0], v[1], v[2], v[3] };
 }
 
+//'
+//' 'compUpdate' update orientation with 3-axis acc and gyr data
+//'
+//' @param acc A numeric 3-vector of 3-axis accelerometer readings in g
+//' @param gyr A numeric 3-vector of 3-axis gyroscope readings in rad/sec
+//' @param dt A numeric of time duration in sec
+//' @param initQuat A numeric 4-vector of the starting orientation in quaternion
+//' @param gain A numeric gain factor between 0 and 1
+//' @return A numeric 4-vector of the ending orientation in quaternion
+//'
+//' @examples
+//' compUpdate(c(0, 0, -1), c(1, 0, 0), 0.1, c(1, 0, 0, 0), 0.1)
+//'
 // [[Rcpp::export(name = "compUpdate")]]
 NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, NumericVector initQuat, double gain) {
   const vec<double, 3> accVec = numericVecToVec(acc);
@@ -50,7 +63,7 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
   normalize(qAdj);
   quat<double> qout = qAdj * qt1;
   normalize(qout);
-  
+
   return quatToNumericVec(qout);
 }
 
