@@ -30,12 +30,13 @@ quat<double> numericVecToQuat(NumericVector v) {
 //' @param dt A numeric of time duration in sec
 //' @param initQuat A numeric 4-vector of the starting orientation in quaternion
 //' @param gain A numeric gain factor between 0 and 1
-//' @return A numeric 4-vector of the ending orientation in quaternion
+//' @returns A numeric 4-vector of the ending orientation in quaternion
+//' @export
 //'
 //' @examples
 //' compUpdate(c(0, 0, -1), c(1, 0, 0), 0.1, c(1, 0, 0, 0), 0.1)
 //'
-// [[Rcpp::export(name = "compUpdate")]]
+// [[Rcpp::export]]
 NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, NumericVector initQuat, double gain) {
   const vec<double, 3> accVec = numericVecToVec(acc);
   const vec<double, 3> gyrVec = numericVecToVec(gyr);
@@ -66,17 +67,3 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
 
   return quatToNumericVec(qout);
 }
-
-/*** R
-# use realistic imu readings
-#
-initQ <- c(0.9838937550736144, -0.008503796943710444, -0.0026035201363168387, -0.17853287049611438)
-acc <- c(-0.005615234, 0.019042969, -1.004150391)
-gyr <- c(0, -0.009587379919921934, -0.00745685105658519)
-dt <- 0.024
-gain <- 0.1
-qout <- compUpdate(acc, gyr, dt, initQ, gain)
-#
-qout  # should be 0.9838771143246333 -0.008654456431112963 -0.0025514591206403673 -0.17861806837067223
-#
-*/

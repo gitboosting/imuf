@@ -9,12 +9,13 @@
 #' @param dt A numeric of time duration in sec
 #' @param initQuat A numeric 4-vector of the starting orientation in quaternion
 #' @param gain A numeric gain factor between 0 and 1
-#' @return A numeric 4-vector of the ending orientation in quaternion
+#' @returns A numeric 4-vector of the ending orientation in quaternion
+#' @export
 #'
 #' @examples
 #' compUpdate(c(0, 0, -1), c(1, 0, 0), 0.1, c(1, 0, 0, 0), 0.1)
 #'
 compUpdate <- function(acc, gyr, dt, initQuat, gain) {
-    .Call('_imuf_compUpdate', PACKAGE = 'imuf', acc, gyr, dt, initQuat, gain)
+    .Call(`_imuf_compUpdate`, acc, gyr, dt, initQuat, gain)
 }
 
