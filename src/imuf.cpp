@@ -46,7 +46,12 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
   const quat<double> gyrQuat = vecToQuat(gyrVec);
   const double gyrQuatNorm = mag(gyrQuat);
   const double delta = gyrQuatNorm * dt / 2.0;
-  quat<double> qt1 = qt * cos(delta) + qt * 1 / gyrQuatNorm * sin(delta) * gyrQuat;
+  quat<double> qt1;
+  if (delta == 0) {
+    qt1 = qt;
+  } else {
+    qt1 = qt * cos(delta) + qt * 1 / gyrQuatNorm * sin(delta) * gyrQuat;
+  }
   normalize(qt1);
   //
   // rotate acc by qt1
