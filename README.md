@@ -14,6 +14,10 @@ gyroscope. It takes the IMU’s accelerometer and gyroscope readings, time
 duration, its initial orientation, and a ‘gain’ factor as inputs, and
 provides an estimate of the final orientation as outputs.
 
+‘imuf’ adopts the north-east-down (NED) coordinate system. The initial
+and final orientations are expressed as quaternions in (w, x, y, z)
+convention.
+
 ## Installation
 
 You can install the development version of imuf from
@@ -30,5 +34,13 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(imuf)
-final <- compUpdate(c(0, 0, -1), c(1, 0, 0), 0.1, c(1, 0, 0, 0), 0.1)
+acc <- c(0, 0, -1)         # accelerometer NED readings in g (~ 9.81 m/s^2) 
+gyr <- c(1, 0, 0)          # gyroscope NED readings in radians per second
+deltat <- 0.1              # time duration in seconds
+initq <- c(1, 0, 0, 0)     # initial orientation expressed as a quaternion
+gain <- 0.1                # a weight (0-1) given to the accelerometer readings
+#
+# final orientation expressed as a quaternion
+(final <- compUpdate(acc, gyr, deltat, initq, gain))
+#> [1] 0.99898767 0.04498481 0.00000000 0.00000000
 ```
