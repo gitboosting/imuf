@@ -4,9 +4,9 @@
 \name{imuf-package}
 \alias{imuf}
 \alias{imuf-package}
-\title{imuf: Estimate Orientation of a 6 dof IMU with a Complementary Filter}
+\title{imuf: Estimate Orientation of a 6 Degree-of-Freedom Inertial Measurement Unit with a Complementary Filter}
 \description{
-An estimator of the orientation of an inertial measurement unit with a 3-axis accelerometer and a 3-axis gyroscope. You provide the accelerometer and gyroscope readings, time duration, the initial orientation, and a "gain" factor. We provide an estimate of the final orientation.
+An estimator of the orientation of an inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis gyroscope. You provide 'imuf' the IMU's accelerometer and gyroscope readings, time duration, its initial orientation, and a "gain" factor. 'imuf' provides an estimate of the IMU's final orientation.
 }
 \author{
 \strong{Maintainer}: Felix Chan \email{chanfelix@gmail.com}

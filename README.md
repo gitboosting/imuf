@@ -8,11 +8,11 @@
 [![R-CMD-check](https://github.com/gitboosting/imuf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gitboosting/imuf/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of imuf is to estimate the orientation of an inertial
-measurement unit with a 3-axis accelerometer and a 3-axis gyroscope. You
-provide the accelerometer and gyroscope readings, time duration, the
-initial orientation, and a “gain” factor. We provide an estimate of the
-final orientation.
+‘imuf’ uses complementary filtering to estimate the orientation of an
+inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis
+gyroscope. It takes the IMU’s accelerometer and gyroscope readings, time
+duration, its initial orientation, and a ‘gain’ factor as inputs, and
+provides an estimate of the final orientation as outputs.
 
 ## Installation
 
