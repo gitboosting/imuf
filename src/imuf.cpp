@@ -38,6 +38,8 @@ quat<double> numericVecToQuat(NumericVector v) {
 //'
 // [[Rcpp::export]]
 NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, NumericVector initQuat, double gain) {
+  //
+  // coordinate system is NED
   const vec<double, 3> accVec = numericVecToVec(acc);
   const vec<double, 3> gyrVec = numericVecToVec(gyr);
   const quat<double> qt = numericVecToQuat(initQuat);
