@@ -2,7 +2,7 @@ Package: imuf
 Title: Estimate Orientation of a 6 Degree-of-Freedom Inertial Measurement Unit with a Complementary Filter
 Version: 0.0.0.9000
 Authors@R: 
-    person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre"))
+    person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre", "cph"))
 Description: An estimator of the orientation of an inertial measurement unit 
     (IMU) with a 3-axis accelerometer and a 3-axis gyroscope. You provide 'imuf'
     the IMU's accelerometer and gyroscope readings, time duration, its initial 
