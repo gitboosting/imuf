@@ -6,7 +6,15 @@
 \alias{imuf-package}
 \title{imuf: Estimate Orientation of a 6 Degree-of-Freedom Inertial Measurement Unit with a Complementary Filter}
 \description{
-An estimator of the orientation of an inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis gyroscope. You provide 'imuf' the IMU's accelerometer and gyroscope readings, time duration, its initial orientation, and a "gain" factor. 'imuf' provides an estimate of the IMU's final orientation.
+Estimate the orientation of an inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis gyroscope using a complementary filter. 'imuf' takes an IMU's accelerometer and gyroscope readings, time duration, its initial orientation, and a gain factor as inputs, and returns an estimate of the IMU's final orientation.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/gitboosting/imuf}
+  \item Report bugs at \url{https://github.com/gitboosting/imuf/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Felix Chan \email{chanfelix@gmail.com} [copyright holder]
