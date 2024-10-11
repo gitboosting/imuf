@@ -20,6 +20,10 @@ convention.
 
 ## Installation
 
+``` r
+install.packages("imuf")
+```
+
 You can install the development version of imuf from
 [GitHub](https://github.com/) with:
 
