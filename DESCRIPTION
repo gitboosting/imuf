@@ -3,11 +3,11 @@ Title: Estimate Orientation of a 6 Degree-of-Freedom Inertial Measurement Unit w
 Version: 0.0.0.9000
 Authors@R: 
     person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre", "cph"))
-Description: An estimator of the orientation of an inertial measurement unit 
-    (IMU) with a 3-axis accelerometer and a 3-axis gyroscope. You provide 'imuf'
-    the IMU's accelerometer and gyroscope readings, time duration, its initial 
-    orientation, and a "gain" factor. 'imuf' provides an estimate of the IMU's 
-    final orientation.
+Description: Estimate the orientation of an inertial measurement unit 
+    (IMU) with a 3-axis accelerometer and a 3-axis gyroscope using a 
+    complementary filter. 'imuf' takes an IMU's accelerometer and gyroscope 
+    readings, time duration, its initial orientation, and a gain factor as 
+    inputs, and returns an estimate of the IMU's final orientation.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
