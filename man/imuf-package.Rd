@@ -9,7 +9,7 @@
 An estimator of the orientation of an inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis gyroscope. You provide 'imuf' the IMU's accelerometer and gyroscope readings, time duration, its initial orientation, and a "gain" factor. 'imuf' provides an estimate of the IMU's final orientation.
 }
 \author{
-\strong{Maintainer}: Felix Chan \email{chanfelix@gmail.com}
+\strong{Maintainer}: Felix Chan \email{chanfelix@gmail.com} [copyright holder]
 
 }
 \keyword{internal}
