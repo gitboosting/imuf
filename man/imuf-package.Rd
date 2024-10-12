@@ -12,6 +12,7 @@ Estimate the orientation of an inertial measurement unit (IMU) with a 3-axis acc
 Useful links:
 \itemize{
   \item \url{https://github.com/gitboosting/imuf}
+  \item \url{https://gitboosting.github.io/imuf/}
   \item Report bugs at \url{https://github.com/gitboosting/imuf/issues}
 }
 
