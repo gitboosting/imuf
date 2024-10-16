@@ -1,5 +1,5 @@
 Package: imuf
-Title: Estimate Orientation of a 6 Degree-of-Freedom Inertial Measurement Unit with a Complementary Filter
+Title: Estimate Orientation of an Inertial Measurement Unit
 Version: 0.2.0
 Authors@R: 
     person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre", "cph"))
