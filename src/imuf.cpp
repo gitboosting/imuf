@@ -115,5 +115,3 @@ qout <- compUpdate(acc, gyr, dt, initQ, gain)
 qout  # should be 0.9838771143246333 -0.008654456431112963 -0.0025514591206403673 -0.17861806837067223
 #
 */
-eigenExpt.cpp
-Displaying eigenExpt.cpp.
