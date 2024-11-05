@@ -13,23 +13,6 @@ VectorXd numericVecToVec(NumericVector v) {
   return vout;
 }
 
-NumericVector vecToNumericVec(VectorXd v) {
-  NumericVector vout = { v[0], v[1], v[2] };
-  return vout;
-}
-
-// Eigen::Vector3d vxdTov3d(VectorXd v) {
-//   Eigen::Vector3d vout(v[0], v[1], v[2]);
-//   return vout;
-// }
-
-// [[Rcpp::export]]
-NumericVector nv2vec2nv(NumericVector vin) {
-  VectorXd v = numericVecToVec(vin);
-  NumericVector nv = vecToNumericVec(v);
-  return nv;
-}
-
 Quaternion<double> vecToQuat(VectorXd v) {
   return Quaternion<double> { 0, v[0], v[1], v[2] };
 }
@@ -62,13 +45,20 @@ Quaternion<double> operator+ (const Quaternion<double>& q1, const Quaternion<dou
   return qout;
 }
 
-// [[Rcpp::export]]
-NumericVector nv2quat2nv(NumericVector nvin) {
-  Quaternion<double> q = numericVecToQuat(nvin);
-  NumericVector nv = quatToNumericVec(q);
-  return nv;
-}
-
+//'
+//' 'compUpdate' update orientation with 3-axis acc and gyr data
+//'
+//' @param acc A numeric 3-vector of 3-axis accelerometer readings in g
+//' @param gyr A numeric 3-vector of 3-axis gyroscope readings in rad/sec
+//' @param dt A numeric of time duration in sec
+//' @param initQuat A numeric 4-vector of the starting orientation in quaternion
+//' @param gain A numeric gain factor between 0 and 1
+//' @returns A numeric 4-vector of the ending orientation in quaternion
+//' @export
+//'
+//' @examples
+//' compUpdate(c(0, 0, -1), c(1, 0, 0), 0.1, c(1, 0, 0, 0), 0.1)
+//'
 // [[Rcpp::export]]
 NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, NumericVector initQuat, double gain) {
 
@@ -97,12 +87,6 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
 }
 
 /*** R
-# use realistic imu readings
-
-(vout <- nv2vec2nv(c(7, 8, 9)))
-#
-(nvout <- nv2quat2nv(c(5, 6, 7, 8)))
-#
 # use realistic imu readings
 #
 initQ <- c(0.9838937550736144, -0.008503796943710444, -0.0026035201363168387, -0.17853287049611438)
