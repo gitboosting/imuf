@@ -1,7 +1,6 @@
-#include <RcppEigen.h>
-#include <Rcpp.h>
-
 // [[Rcpp::depends(RcppEigen)]]
+#include <Rcpp.h>
+#include <RcppEigen.h>
 
 using namespace Rcpp;
 using Eigen::Quaternion;
