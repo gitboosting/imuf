@@ -1,5 +1,4 @@
 // [[Rcpp::depends(RcppEigen)]]
-#include <Rcpp.h>
 #include <RcppEigen.h>
 
 using namespace Rcpp;
@@ -69,7 +68,12 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
   const Quaternion<double> gyrQuat = vecToQuat(gyrVec);
   const double gyrQuatNorm = gyrQuat.norm();
   const double delta = gyrQuatNorm * dt / 2.0;
-  Quaternion<double> qt1 = qt * cos(delta) + qt * (gyrQuat * 1 / gyrQuatNorm * sin(delta));
+  Quaternion<double> qt1;
+  if (delta == 0) {
+    qt1 = qt;
+  } else {
+    qt1 = qt * cos(delta) + qt * 1 / gyrQuatNorm * sin(delta) * gyrQuat;
+  }
   qt1.normalize();
   //
   // transform acc from body-fixed frame to world frame
@@ -85,16 +89,3 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
   return quatToNumericVec(qout);
 }
 
-/*** R
-# use realistic imu readings
-#
-initQ <- c(0.9838937550736144, -0.008503796943710444, -0.0026035201363168387, -0.17853287049611438)
-acc <- c(-0.005615234, 0.019042969, -1.004150391)
-gyr <- c(0, -0.009587379919921934, -0.00745685105658519)
-dt <- 0.024
-gain <- 0.1
-qout <- compUpdate(acc, gyr, dt, initQ, gain)
-#
-qout  # should be 0.9838771143246333 -0.008654456431112963 -0.0025514591206403673 -0.17861806837067223
-#
-*/
