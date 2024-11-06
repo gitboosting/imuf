@@ -1,4 +1,4 @@
-# imuf (development version)
+# imuf 0.3.0
 
 # imuf 0.2.1
 
