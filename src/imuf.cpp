@@ -11,6 +11,11 @@ VectorXd numericVecToVec(NumericVector v) {
   return vout;
 }
 
+NumericVector vecToNumericVec(VectorXd v) {
+  NumericVector vout = { v[0], v[1], v[2] };
+  return vout;
+}
+
 Quaternion<double> vecToQuat(VectorXd v) {
   return Quaternion<double> { 0, v[0], v[1], v[2] };
 }
@@ -87,5 +92,27 @@ NumericVector compUpdate(NumericVector acc, NumericVector gyr, double dt, Numeri
   Quaternion<double> qout = qt1.slerp(gain, qAdj * qt1);
   //
   return quatToNumericVec(qout);
+}
+
+//'
+//' 'rotV' rotates a 3-vector by a quaternion
+//'
+//' @param quat A numeric unit 4-vector (w,x,y,z) for a rotation quaternion
+//' @param vin A numeric 3-vector to be rotated by quat
+//' @returns A numeric 3-vector after the rotation
+//' @export
+//'
+//' @examples
+//' q <- c(cos(pi/4), sin(pi/4), 0, 0)
+//' vin <- c(0, 1, 0)
+//' rotV(q, vin)
+//'
+// [[Rcpp::export]]
+NumericVector rotV(NumericVector quat, NumericVector vin) {
+  const Quaternion<double> q = numericVecToQuat(quat);
+  const VectorXd v = numericVecToVec(vin);
+  const VectorXd vout = q._transformVector(v);
+  NumericVector nvout = vecToNumericVec(vout);
+  return nvout;
 }
 
