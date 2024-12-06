@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimate Orientation of an Inertial Measurement Unit">
 <meta name="description" content="Estimate the orientation of an inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis gyroscope using a complementary filter. imuf takes an IMUs accelerometer and gyroscope readings, time duration, its initial orientation, and a gain factor as inputs, and returns an estimate of the IMUs final orientation.">
 <meta property="og:description" content="Estimate the orientation of an inertial measurement unit (IMU) with a 3-axis accelerometer and a 3-axis gyroscope using a complementary filter. imuf takes an IMUs accelerometer and gyroscope readings, time duration, its initial orientation, and a gain factor as inputs, and returns an estimate of the IMUs final orientation.">
@@ -79,6 +79,7 @@
 <p>This is a basic example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gitboosting/imuf" class="external-link">imuf</a></span><span class="op">)</span></span>
+<span><span class="co">#</span></span>
 <span><span class="va">acc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>         <span class="co"># accelerometer NED readings in g (~ 9.81 m/s^2) </span></span>
 <span><span class="va">gyr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>          <span class="co"># gyroscope NED readings in radians per second</span></span>
 <span><span class="va">deltat</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>              <span class="co"># time duration in seconds</span></span>
@@ -87,7 +88,14 @@
 <span><span class="co">#</span></span>
 <span><span class="co"># final orientation expressed as a quaternion</span></span>
 <span><span class="op">(</span><span class="va">final</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compUpdate.html">compUpdate</a></span><span class="op">(</span><span class="va">acc</span>, <span class="va">gyr</span>, <span class="va">deltat</span>, <span class="va">initq</span>, <span class="va">gain</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.99898767 0.04498481 0.00000000 0.00000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.99898767 0.04498481 0.00000000 0.00000000</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># rotate a vector pointing east by 90 deg about north</span></span>
+<span><span class="va">q</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>   <span class="co"># quaternion to rotate 90 deg about north</span></span>
+<span><span class="va">vin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>                    <span class="co"># vector in east direction</span></span>
+<span><span class="op">(</span><span class="va">vout</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rotV.html">rotV</a></span><span class="op">(</span><span class="va">q</span>, <span class="va">vin</span><span class="op">)</span><span class="op">)</span>               <span class="co"># after rotation, vector is in down direction</span></span>
+<span><span class="co">#&gt; [1] 0.000000e+00 2.220446e-16 1.000000e+00</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
