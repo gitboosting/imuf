@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{rotV}
 \alias{rotV}
-\title{'rotV' rotates a 3-vector by a quaternion}
+\title{Rotate a 3-vector by a quaternion}
 \usage{
 rotV(quat, vin)
 }
@@ -15,7 +15,8 @@ rotV(quat, vin)
 A numeric 3-vector after the rotation
 }
 \description{
-'rotV' rotates a 3-vector by a quaternion
+\code{rotV()} rotates a 3-vector by a quaternion expressed as a unit 4-vector in
+(w,x,y,z) convention
 }
 \examples{
 q <- c(cos(pi/4), sin(pi/4), 0, 0)
