@@ -22,5 +22,9 @@
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1"
+  },
+  "dependencies": {
+    "three": "^0.172.0",
+    "three-orbitcontrols": "^2.110.3"
   }
 }

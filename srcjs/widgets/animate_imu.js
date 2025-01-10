@@ -1,5 +1,5 @@
 import 'widgets';
-import { asHeader } from '../modules/header.js'; 
+import { getSketch, init } from "../modules/go_animate.js";
 
 HTMLWidgets.widget({
 
@@ -15,8 +15,12 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
-        // TODO: code to render the widget, e.g.
-        el.innerHTML = asHeader(x);
+        var sketch = getSketch(el);
+
+        const data = x.data;
+        const dt = x.dt;
+
+        init(data, dt, sketch);
 
       },
 

@@ -1,15 +1,22 @@
-#' <Add Title>
+#' Animate movement of an inertial measurement unit
 #'
-#' <Add Description>
+#' Create interactive animated movements of an inertial measurement unit
+#'
+#' @param data A \code{list} of numeric 4-vectors each of which a unit quaternion [w,x,y,z]
+#' @param dt A numeric of time duration in milli-seconds
+#' @param width,height  width and height of animate_imu htmlwidget
+#'          specified in any valid \code{CSS} size unit
+#' @param elementId \code{string} id as a valid \code{CSS} element id.
 #'
 #' @import htmlwidgets
 #'
 #' @export
-animate_imu <- function(message, width = NULL, height = NULL, elementId = NULL) {
+animate_imu <- function(data, dt, width = NULL, height = NULL, elementId = NULL) {
 
   # forward options using x
   x = list(
-    message = message
+    data = data,
+    dt = dt
   )
 
   # create widget
@@ -21,6 +28,10 @@ animate_imu <- function(message, width = NULL, height = NULL, elementId = NULL) 
     package = 'imuf',
     elementId = elementId
   )
+}
+
+animate_imu_html <- function(id, style, class, ...){
+  htmltools::tags$canvas(id = id, class = class)
 }
 
 #' Shiny bindings for animate_imu
@@ -41,7 +52,7 @@ animate_imu <- function(message, width = NULL, height = NULL, elementId = NULL) 
 #'
 #' @export
 animate_imuOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'animate_imu', width, height, package = 'imuf')
+  htmlwidgets::shinyWidgetOutput(outputId, 'animate_imu', width, height, package = 'imufanime')
 }
 
 #' @rdname animate_imu-shiny

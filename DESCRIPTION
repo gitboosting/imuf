@@ -16,6 +16,7 @@ LinkingTo:
     Rcpp,
     RcppEigen
 Imports: 
+    htmltools,
     htmlwidgets,
     Rcpp
 Suggests: 
