@@ -1,14 +1,16 @@
 Package: imuf
 Title: Estimate Orientation of an Inertial Measurement Unit
 Version: 0.4.0.9000
-Authors@R: 
-    person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre", "cph"))
+Authors@R: c(
+    person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre", "cph")),
+    person("Ricardo", "Cabello", role = "cph", comment = "'three.js' JavaScript library")
+  )
 Description: Estimate the orientation of an inertial measurement unit 
     (IMU) with a 3-axis accelerometer and a 3-axis gyroscope using a 
     complementary filter. 'imuf' takes an IMU's accelerometer and gyroscope 
     readings, time duration, its initial orientation, and a gain factor as 
     inputs, and returns an estimate of the IMU's final orientation.
-License: GPL (>= 3)
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
