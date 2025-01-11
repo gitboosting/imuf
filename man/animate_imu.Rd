@@ -7,7 +7,7 @@
 animate_imu(data, dt, width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
-\item{data}{A \code{list} of numeric 4-vectors each of which a unit quaternion \link{w,x,y,z}}
+\item{data}{A \code{list} of numeric 4-vectors each of which a unit quaternion (w,x,y,z)}
 
 \item{dt}{A numeric of time duration in milli-seconds}
 

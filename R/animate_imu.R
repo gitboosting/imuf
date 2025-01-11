@@ -2,7 +2,7 @@
 #'
 #' Create interactive animated movements of an inertial measurement unit
 #'
-#' @param data A \code{list} of numeric 4-vectors each of which a unit quaternion [w,x,y,z]
+#' @param data A \code{list} of numeric 4-vectors each of which a unit quaternion (w,x,y,z)
 #' @param dt A numeric of time duration in milli-seconds
 #' @param width,height  width and height of animate_imu htmlwidget
 #'          specified in any valid \code{CSS} size unit
