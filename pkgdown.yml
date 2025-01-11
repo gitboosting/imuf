@@ -2,8 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  animate_imu: animate_imu.html
   imuf: imuf.html
-last_built: 2024-12-08T19:37Z
+last_built: 2025-01-11T22:46Z
 urls:
   reference: https://gitboosting.github.io/imuf/reference
   article: https://gitboosting.github.io/imuf/articles

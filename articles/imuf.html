@@ -40,6 +40,12 @@
       <ul class="navbar-nav me-auto">
 <li class="active nav-item"><a class="nav-link" href="../articles/imuf.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/animate_imu.html">animate_imu</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -71,7 +77,7 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The imuf package performs sensor fusion for an inertial measuremnt
+<p>The imuf package performs sensor fusion for an inertial measurement
 unit (IMU) that has a 3-axis accelerometer and a 3-axis gyroscope.</p>
 <p>Specifically, <code><a href="../reference/compUpdate.html">compUpdate()</a></code> uses <a href="https://stanford.edu/class/ee267/notes/ee267_notes_imu.pdf" class="external-link">complementary
 filtering</a> to estimate the sensor’s final orientation, given its
