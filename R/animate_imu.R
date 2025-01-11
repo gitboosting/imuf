@@ -52,7 +52,7 @@ animate_imu_html <- function(id, style, class, ...){
 #'
 #' @export
 animate_imuOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'animate_imu', width, height, package = 'imufanime')
+  htmlwidgets::shinyWidgetOutput(outputId, 'animate_imu', width, height, package = 'imuf')
 }
 
 #' @rdname animate_imu-shiny
