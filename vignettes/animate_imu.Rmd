@@ -1,6 +1,6 @@
 ---
 title: "animate_imu"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_document
 runtime: shiny
 description:
   Learn how to use `animate_imu()` function to generate a 3-D animation of a 
