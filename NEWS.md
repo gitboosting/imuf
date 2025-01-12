@@ -1,3 +1,5 @@
+# imuf (development version)
+
 # imuf 0.5.0
 * Added animation of IMU orientations
 
