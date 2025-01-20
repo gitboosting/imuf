@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   animate_imu: animate_imu.html
   imuf: imuf.html
-last_built: 2025-01-16T01:01Z
+last_built: 2025-01-20T03:20Z
 urls:
   reference: https://gitboosting.github.io/imuf/reference
   article: https://gitboosting.github.io/imuf/articles
