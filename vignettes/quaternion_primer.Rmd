@@ -1,0 +1,64 @@
+---
+title: "A primer on quaternions and rotations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A primer on quaternions and rotations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+## Introduction
+
+The imuf package uses the mathematics of quaternions to analyze the data from an inertial measurement unit (IMU) and to track its orientation in 3D. To use the imuf package,it is helpful to understand what quaternions are and how they operate as vectors and rotations.
+
+## What is a quaternion?
+
+A quaternion is a 4-componment mathematical object $q = q_{w} + i q_{x} + j q_{y} + k q_{z}$ with a scalar component $q_{w}$ and a vector component $(q_{x}, q_{y}, q_{z})$. The quaternion units $i, j, k$ are analogus to the imaginary unit $i = \sqrt{-1}$ in complex numbers, except that in quaternions there are three units and they obey the following relationships:
+
+$i^2 = j^2 = k^2 = i j k = -1$
+
+$i j = - j i = k$
+
+$k i = - i k = j$
+
+$j k = - k j = i$
+
+Quaternion algebra is similar to complex number algebra, but with the added complications of quaternions having four components and the quaternion units needing to obey a more extensive set of rules stated above.
+
+It's important to note that in a multiplication, order matters. Quaternions generally do not commute: $q_{1} q_{2} \neq q_{2} q_{1}$. 
+
+## Relation to rotations and vectors
+
+A quaternion can represent a rotation or a vector.
+
+### Rotation quaternions
+
+A rotation $\theta$ around an axis $\mathbf{v} = (v_{x}, v_{y}, v_{z})$ with unit-length $\sqrt{v_{x}^2 + v_{y}^2 + v_{z}^2)} = 1$ can be represented by a rotation quaternion:
+
+$q(\theta, \mathbf{v}) = cos(\frac{\theta}{2}) + sin(\frac{\theta}{2}) (i v_{x} + j v_{y} + k v_{z})$
+
+The relation between the quaternion components and the axis-angle representation is:
+
+$\begin{bmatrix} q_{w} \\ q_{x} \\ q_{y} \\ q_{z}  \end{bmatrix} = \begin{bmatrix} cos(\theta/2) \\ v_{x} sin(\theta/2) \\ v_{y} sin(\theta/2) \\ v_{z} sin(\theta/2) \end{bmatrix}$
+
+Rotation quaternions have unit length: $\sqrt{q_{w}^2 + q_{x}^2 + q_{y}^2 + q_{z}^2)} = 1$. It is a common practice to re-normalize a rotation quaternion to unit length after an operation due constraints in numerical precision.
+
+### Vector quaternions
+
+A quaternion representing a vector $\mathbf{u} = (u_{x}, u_{y}, u_{z})$ has a zero scalar part:
+
+$q_{u} = 0 + i u_{x} + j u_{y} + k u_{z}$
+
+Unlike a rotation quaternion which has a unit length, a vector quaternion can have an arbitarty length.
+
+
+
+```{r setup}
+library(imuf)
+```
