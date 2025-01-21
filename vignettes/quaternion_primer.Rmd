@@ -39,7 +39,7 @@ A quaternion can represent a rotation or a vector.
 
 ### Rotation quaternions
 
-A rotation $\theta$ around an axis $\mathbf{v} = (v_{x}, v_{y}, v_{z})$ with unit-length $\sqrt{v_{x}^2 + v_{y}^2 + v_{z}^2)} = 1$ can be represented by a rotation quaternion:
+A rotation $\theta$ around an axis $\mathbf{v} = (v_{x}, v_{y}, v_{z})$ with unit-length $\sqrt{v_{x}^2 + v_{y}^2 + v_{z}^2} = 1$ can be represented by a rotation quaternion:
 
 $q(\theta, \mathbf{v}) = cos(\frac{\theta}{2}) + sin(\frac{\theta}{2}) (i v_{x} + j v_{y} + k v_{z})$
 
@@ -47,7 +47,7 @@ The relation between the quaternion components and the axis-angle representation
 
 $\begin{bmatrix} q_{w} \\ q_{x} \\ q_{y} \\ q_{z}  \end{bmatrix} = \begin{bmatrix} cos(\theta/2) \\ v_{x} sin(\theta/2) \\ v_{y} sin(\theta/2) \\ v_{z} sin(\theta/2) \end{bmatrix}$
 
-Rotation quaternions have unit length: $\sqrt{q_{w}^2 + q_{x}^2 + q_{y}^2 + q_{z}^2)} = 1$. It is a common practice to re-normalize a rotation quaternion to unit length after an operation due constraints in numerical precision.
+Rotation quaternions have unit length: $\sqrt{q_{w}^2 + q_{x}^2 + q_{y}^2 + q_{z}^2)} = 1$. After an numerical operation it may be necessary to re-normalize a rotation quaternion to unit length.
 
 ### Vector quaternions
 
@@ -56,6 +56,13 @@ A quaternion representing a vector $\mathbf{u} = (u_{x}, u_{y}, u_{z})$ has a ze
 $q_{u} = 0 + i u_{x} + j u_{y} + k u_{z}$
 
 Unlike a rotation quaternion which has a unit length, a vector quaternion can have an arbitarty length.
+
+### Conjugate
+
+The conjugate of a quaternion is $q^* = q_{w} - i q_{x} - j q_{y} - k q_{z}$. For a rotation quaternion, its conjugate represents a rotation in the opposite direction. For a vector quaternion, its conjugate represents a vector pointing in the opposite direction.
+
+### Rotation of a vector
+
 
 
 
