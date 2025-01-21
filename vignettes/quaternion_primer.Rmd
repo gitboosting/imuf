@@ -13,6 +13,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+```{r setup}
+library(imuf)
+library(RSpincalc)
+```
+
 ## Introduction
 
 The imuf package uses the mathematics of quaternions to analyze the data from an inertial measurement unit (IMU) and to track its orientation in 3D. To use the imuf package,it is helpful to understand what quaternions are and how they operate as vectors and rotations.
@@ -33,7 +39,7 @@ Quaternion algebra is similar to complex number algebra, but with the added comp
 
 It's important to note that in a multiplication, order matters. Quaternions generally do not commute: $q_{1} q_{2} \neq q_{2} q_{1}$. 
 
-## Relation to rotations and vectors
+## Quaternions as rotations and vectors
 
 A quaternion can represent a rotation or a vector.
 
@@ -61,11 +67,20 @@ Unlike a rotation quaternion which has a unit length, a vector quaternion can ha
 
 The conjugate of a quaternion is $q^* = q_{w} - i q_{x} - j q_{y} - k q_{z}$. For a rotation quaternion, its conjugate represents a rotation in the opposite direction. For a vector quaternion, its conjugate represents a vector pointing in the opposite direction.
 
-### Rotation of a vector
+### Rotating a vector
 
+One can rotate a vector represented by a vector quaternion $q_{u}$ by a rotation represented by a rotation quaternion $q$ using this transformation:
 
+$q'_{u} = q q_{u} q^*$
 
+The resulting vector quaternion $q'_{u}$ represents the rotated vector. For example, rotating a vector of length 2 along the y-axis about the x-axis by 90 degrees or $\pi$/2 would result in a vector of length 2 along the z-axis:
 
-```{r setup}
-library(imuf)
+```{r}
+qu <- c(0, 0, 2, 0)   # quaternion of a vector of length 2 along the y-axis
+angle <- pi/2
+q <- c(cos(angle/2), sin(angle/2), 0, 0)   # quaternion of a rotation about the x-axis by pi/2
+qconj <- RSpincalc::Qconj(q)    # conjugate of the rotation quaternion
+#
+qu_rotated <- q %Q*% qu %Q*% qconj
+qu_rotated
 ```
