@@ -35,7 +35,7 @@ $k i = - i k = j$
 
 $j k = - k j = i$
 
-Quaternion algebra is similar to complex number algebra, but with the added complications of quaternions having four components and the quaternion units needing to obey a more extensive set of rules stated above.
+Quaternion algebra is similar to complex number algebra, but with the added complications of quaternions having four components and the quaternion units needing to obey a more extensive set of rules as stated above.
 
 It's important to note that in a multiplication, order matters. Quaternions generally do not commute: $q_{1} q_{2} \neq q_{2} q_{1}$. 
 
@@ -69,7 +69,7 @@ The conjugate of a quaternion is $q^* = q_{w} - i q_{x} - j q_{y} - k q_{z}$. Fo
 
 ### Rotating a vector
 
-One can rotate a vector represented by a vector quaternion $q_{u}$ by a rotation represented by a rotation quaternion $q$ using this transformation:
+One can rotate a vector quaternion $q_{u}$ by a rotation quaternion $q$ using the following transformation:
 
 $q'_{u} = q q_{u} q^*$
 
@@ -84,3 +84,33 @@ qconj <- RSpincalc::Qconj(q)    # conjugate of the rotation quaternion
 qu_rotated <- q %Q*% qu %Q*% qconj
 qu_rotated
 ```
+
+Another rotation about the z-axis leaves the vector unchanged:
+
+```{r}
+qu <- qu_rotated   # start with the rotated vector from previous step
+angle <- pi/2
+q <- c(cos(angle/2), 0, 0, sin(angle/2))   # quaternion of a rotation about the z-axis by pi/2
+qconj <- RSpincalc::Qconj(q)    # conjugate of the rotation quaternion
+#
+qu_rotated <- q %Q*% qu %Q*% qconj
+qu_rotated
+```
+
+Note that rotations do not commute. Reversing the order by rotating $q_{u}$ about the z-axis by $\pi$/2 first and then about the x-axis by $\pi$/2 second yields a different result:
+
+```{r}
+qu <- c(0, 0, 2, 0)   # start with a vector of length 2 along the y-axis
+angle <- pi/2
+q1 <- c(cos(angle/2), 0, 0, sin(angle/2))   # rotation about the z-axis by pi/2
+q2 <- c(cos(angle/2), sin(angle/2), 0, 0)   # rotation about the x-axis by pi/2
+q1conj <- RSpincalc::Qconj(q1)    # conjugate of q1
+q2conj <- RSpincalc::Qconj(q2)    # conjugate of q2
+#
+qu_rotated <- q1 %Q*% qu %Q*% q1conj
+qu_rotated <- q2 %Q*% qu_rotated %Q*% q2conj
+#
+qu_rotated    # this vector quaternion is different from the one in the previous section
+```
+
+## 
