@@ -16,14 +16,16 @@ runshiny <- function(...) {
   orientations <- purrr::accumulate(lst_ned_in, myCompUpdate, .init = c(1, 0, 0, 0))
 
   ui = fluidPage(
+    actionButton("do", "Click Me"),
     imu_objectOutput('orientations'),
     verbatimTextOutput("elid")
   )
 
   server = function(input, output, session) {
-    updateMesh <- function(id, quat) {
-      message <- list(id = id, quat = quat)
-    }
+    observeEvent(input$do, {
+      quat <- c(0, 0, 1, 0)
+      imu_send_data(id = input$elid, data = quat)
+    })
 
     output$orientations <- renderImu_object(
       imu_object("felix")
@@ -32,6 +34,7 @@ runshiny <- function(...) {
     output$elid <- renderPrint({
       print(input$elid)
     })
+
   }
   shinyApp(ui = ui, server = server)
 }

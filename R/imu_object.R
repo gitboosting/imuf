@@ -54,3 +54,9 @@ renderImu_object <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, imu_objectOutput, env, quoted = TRUE)
 }
+
+#' @export
+imu_send_data <- function(id, data, session = shiny::getDefaultReactiveDomain()){
+  message <- list(id = id, data = data)
+  session$sendCustomMessage("send-data", message)
+}
