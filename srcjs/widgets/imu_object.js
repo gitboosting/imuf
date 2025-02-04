@@ -1,6 +1,5 @@
 import 'widgets';
 import { getSketch } from "../modules/go_animate.js";
-// import { asHeader } from '../modules/header.js';
 
 HTMLWidgets.widget({
 
@@ -12,6 +11,7 @@ HTMLWidgets.widget({
 
     // TODO: define shared variables for this instance
     var sketch;
+    var elid;
 
     return {
 
@@ -20,7 +20,7 @@ HTMLWidgets.widget({
         // TODO: code to render the widget, e.g.
         // el.innerHTML = asHeader(x);
         sketch = getSketch(el);
-
+        Shiny.setInputValue("elid", el.id);
       },
 
       resize: function(width, height) {
