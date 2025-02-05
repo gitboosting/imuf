@@ -24,7 +24,8 @@ runshiny <- function(...) {
   server = function(input, output, session) {
     observeEvent(input$do, {
       quat <- c(0, 0, 1, 0)
-      imu_send_data(id = input$elid, data = quat)
+      imu_proxy(input$elid) %>%
+        imu_send_data(data = quat)
     })
 
     output$orientations <- renderImu_object(

@@ -56,7 +56,12 @@ renderImu_object <- function(expr, env = parent.frame(), quoted = FALSE) {
 }
 
 #' @export
-imu_send_data <- function(id, data, session = shiny::getDefaultReactiveDomain()){
-  message <- list(id = id, data = data)
-  session$sendCustomMessage("send-data", message)
+imu_proxy <- function(id, session = shiny::getDefaultReactiveDomain()) {
+  list(id = id, session = session)
+}
+
+#' @export
+imu_send_data <- function(proxy, data) {
+  message <- list(id = proxy$id, data = data)
+  proxy$session$sendCustomMessage("send-data", message)
 }
