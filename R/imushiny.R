@@ -13,7 +13,7 @@ runshiny <- function(...) {
     orientation
   }
   #
-  orientations <- purrr::accumulate(lst_ned_in, myCompUpdate, .init = c(1, 0, 0, 0))
+  # orientations <- purrr::accumulate(lst_ned_in, myCompUpdate, .init = c(1, 0, 0, 0))
 
   ui = fluidPage(
     actionButton("do", "Click Me"),
@@ -23,9 +23,13 @@ runshiny <- function(...) {
 
   server = function(input, output, session) {
     observeEvent(input$do, {
-      quat <- c(0, 0, 1, 0)
-      imu_proxy(input$elid) %>%
-        imu_send_data(data = quat)
+      quat <- c(1, 0, 0, 0)
+      for (i in 1:1000) {    # loop will exit in 1000 * dt = 20 sec
+        quat <- myCompUpdate(quat, lst_ned_in[[i]])
+        imu_proxy(input$elid) %>%
+          imu_send_data(data = quat)
+        Sys.sleep(dt)
+      }
     })
 
     output$orientations <- renderImu_object(
