@@ -33,6 +33,10 @@ bmi2ned <- function(bmi) {
   c(bmi[1], -bmi[2], -bmi[3])
 }
 
+toRad <- function(x) {
+  x * pi/180
+}
+
 runshiny <- function(...) {
   #
   lst_ned_in <- as.list(as.data.frame(t(walking_shin_1))) %>% unname
@@ -62,9 +66,9 @@ runshiny <- function(...) {
       while (TRUE) {
         a <- readFromSerial(con)
         if (is.null(a)) next
-        accgyr <- c(bmi2ned(a[1:3]), bmi2ned(a[4:6]))
+        # gyr from bmi270 is in deg/sec, need to convert to rad/sec
+        accgyr <- c(bmi2ned(a[1:3]), toRad(bmi2ned(a[4:6])))
         quat <- myCompUpdate(quat, accgyr)
-        print(quat)
         imu_proxy(input$elid) %>%
           imu_send_data(data = quat)
       }
