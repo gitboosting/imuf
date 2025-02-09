@@ -11,7 +11,6 @@ HTMLWidgets.widget({
 
     // TODO: define shared variables for this instance
     var sketch;
-    var elid;
 
     return {
 
