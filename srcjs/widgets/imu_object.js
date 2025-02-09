@@ -17,9 +17,8 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
-        // TODO: code to render the widget, e.g.
-        // el.innerHTML = asHeader(x);
         sketch = getSketch(el);
+        sketch.updateMesh(x.data);
         Shiny.setInputValue("elid", el.id);
       },
 

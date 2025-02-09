@@ -5,11 +5,11 @@
 #' @import htmlwidgets
 #'
 #' @export
-imu_object <- function(message, width = NULL, height = NULL, elementId = NULL) {
+imu_object <- function(data = c(1, 0, 0, 0), width = NULL, height = NULL, elementId = NULL) {
 
   # forward options using x
   x = list(
-    message = message
+    data = data
   )
 
   # create widget

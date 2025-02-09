@@ -13,75 +13,73 @@ getCon <- function(port) {
 }
 
 readFromSerial <- function(con) {
+  #
+  # helper - function to convert sensor coord to NED
+  bmi2ned <- function(bmi) {
+    # convert bmi coord to ned coord
+    c(bmi[1], -bmi[2], -bmi[3])
+  }
+  #
+  # helper - function to convert deg to radian
+  toRad <- function(deg) {
+    deg * pi/180
+  }
+  #
+  minLength <- 32
+  while (TRUE) {
+    nInQ <- serial::nBytesInQueue(con)["n_in"]
+    if(nInQ <= minLength) next
+    a <- serial::read.serialConnection(con)
+    a <- stringr::str_split_1(a, ",") %>% trimws() %>% as.numeric() %>% suppressWarnings()
+    if (length(a) != 6) next
+    #
+    # a is the IMU output we want, exit infinite loop and output the value
+    break
+  }
+  # gyr from bmi270 is in deg/sec, need to convert to rad/sec
+  list(acc = bmi2ned(a[1:3]),
+       gyr = bmi2ned(a[4:6]) %>% toRad())
+}
+
+runshiny <- function(port) {
   if (!requireNamespace("serial", quietly = TRUE)) {
     stop(
       "Package \"serial\" must be installed to use this function.",
       call. = FALSE
     )
   }
-  minLength <- 32
-  nInQ <- serial::nBytesInQueue(con)["n_in"]
-  if(nInQ <= minLength) return(NULL)
-  a <- serial::read.serialConnection(con)
-  a <- stringr::str_split_1(a, ",") %>% trimws() %>% as.numeric() %>% suppressWarnings()
-  if (length(a) != 6) return(NULL)
-  a
-}
-
-bmi2ned <- function(bmi) {
-  # convert bmi coord to ned coord
-  c(bmi[1], -bmi[2], -bmi[3])
-}
-
-toRad <- function(x) {
-  x * pi/180
-}
-
-runshiny <- function(...) {
-  #
-  lst_ned_in <- as.list(as.data.frame(t(walking_shin_1))) %>% unname
-  dt <- 1/50
-  #
-  myCompUpdate <- function(initQ, accgyr) {
-    acc <- accgyr[1:3]
-    gyr <- accgyr[4:6]
-    gain <- 0.1
-    orientation <- compUpdate(acc, gyr, dt, initQ, gain)
-    orientation
+  if (!requireNamespace("shiny", quietly = TRUE)) {
+    stop(
+      "Package \"shiny\" must be installed to use this function.",
+      call. = FALSE
+    )
   }
   #
-  # orientations <- purrr::accumulate(lst_ned_in, myCompUpdate, .init = c(1, 0, 0, 0))
-
   ui = fluidPage(
-    actionButton("do", "Click Me"),
-    imu_objectOutput('orientations'),
-    verbatimTextOutput("elid")
+    actionButton("do", "Start animation"),
+    imu_objectOutput("orientations")
   )
 
   server = function(input, output, session) {
+
+    # initial orientation
+    quat0 <- c(1, 0, 0, 0)
+
     observeEvent(input$do, {
-      con <- getCon("COM3")
+      con <- getCon(port)
       open(con)
-      quat <- c(1, 0, 0, 0)
+      quat <- quat0
       while (TRUE) {
-        a <- readFromSerial(con)
-        if (is.null(a)) next
-        # gyr from bmi270 is in deg/sec, need to convert to rad/sec
-        accgyr <- c(bmi2ned(a[1:3]), toRad(bmi2ned(a[4:6])))
-        quat <- myCompUpdate(quat, accgyr)
+        accgyr <- readFromSerial(con)
+        quat <- compUpdate(accgyr$acc, accgyr$gyr, dt = 1/50, initQ = quat, gain = 0.1)
         imu_proxy(input$elid) %>%
           imu_send_data(data = quat)
       }
     })
 
     output$orientations <- renderImu_object(
-      imu_object("felix")
+      imu_object(quat0)
     )
-
-    output$elid <- renderPrint({
-      print(input$elid)
-    })
-
   }
   shinyApp(ui = ui, server = server)
 }
