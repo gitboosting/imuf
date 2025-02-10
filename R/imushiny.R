@@ -30,6 +30,9 @@ readFromSerial <- function(con) {
     nInQ <- serial::nBytesInQueue(con)["n_in"]
     if(nInQ <= minLength) next
     a <- serial::read.serialConnection(con)
+    #
+    # data from the IMU is a row of 6 comma-separated floats:
+    # accx, accy, accz, gyrx, gyry, gyrz
     a <- stringr::str_split_1(a, ",") %>% trimws() %>% as.numeric() %>% suppressWarnings()
     if (length(a) != 6) next
     #
