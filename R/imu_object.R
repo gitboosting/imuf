@@ -1,6 +1,6 @@
-#' <Add Title>
+#' Animate in real time movement of an inertial measurement unit in shiny
 #'
-#' <Add Description>
+#' Create in real time animated movements of an inertial measurement unit in shiny
 #'
 #' @import htmlwidgets
 #'
@@ -55,13 +55,26 @@ renderImu_object <- function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, imu_objectOutput, env, quoted = TRUE)
 }
 
+#' Update a widget in shiny with an orientation
+#'
+#' Pair of functions used in conjunction to update a imu_object widget
+#'
+#' @param id HTML element id that houses the html widget
+#' @param session shiny session - default to current session
+#' @param proxy imu_proxy output to be used as input to imu_send_data
+#' @param data a numeric unit 4-vector (quaternion) for the updated orientation
+#'
+#' @name imu_object-update
+#'
 #' @export
 imu_proxy <- function(id, session = shiny::getDefaultReactiveDomain()) {
   list(id = id, session = session)
 }
 
+#'@rdname imu_object-update
 #' @export
 imu_send_data <- function(proxy, data) {
   message <- list(id = proxy$id, data = data)
   proxy$session$sendCustomMessage("send-data", message)
+  proxy
 }

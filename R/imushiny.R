@@ -63,7 +63,7 @@ runshiny <- function(port) {
   server = function(input, output, session) {
 
     # initial orientation
-    quat0 <- c(1, 0, 0, 0)
+    quat0 <- c(cos(pi/4), sin(pi/4), 0, 0)
 
     observeEvent(input$do, {
       con <- getCon(port)

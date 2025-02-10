@@ -16,9 +16,9 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
+        Shiny.setInputValue("elid", el.id);
         sketch = getSketch(el);
         sketch.updateMesh(x.data);
-        Shiny.setInputValue("elid", el.id);
       },
 
       resize: function(width, height) {
