@@ -44,6 +44,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/animate_imu.html">animate_imu</a></li>
+    <li><a class="dropdown-item" href="../articles/imu_object.html">imu_object</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -155,7 +156,7 @@ IMU measurements. We will do that in 3 steps:</p>
 readings in our dataset. For the processing of the first reading, we
 simply assume that the sensor’s initial orientation is aligned with the
 world frame. However, for the procesing of the second reading, we take
-the output of the processing of the first reading as the inital
+the output of the processing of the first reading as the initial
 orientation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu">myCompUpdate</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="va">lst_ned_in</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
