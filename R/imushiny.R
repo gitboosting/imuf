@@ -6,9 +6,7 @@ getCon <- function(port) {
   con <- serial::serialConnection(name = "testcon", port = port,
                                   mode = "115200,n,8,1", newline = 1, translation = "crlf"
   )
-  if (serial::isOpen(con)) {
-    close(con)
-  }
+  if (serial::isOpen(con)) close(con)
   con
 }
 
@@ -71,7 +69,7 @@ runshiny <- function(port) {
   #
   ui = fluidPage(
     actionButton("do", "Start animation"),
-    imu_objectOutput("orientations")
+    imu_objectOutput("imu1")
   )
 
   server = function(input, output, session) {
@@ -86,12 +84,12 @@ runshiny <- function(port) {
       while (TRUE) {
         accgyr <- readFromSerial(con)
         quat <- compUpdate(accgyr$acc, accgyr$gyr, dt = 1/50, initQ = quat, gain = 0.1)
-        imu_proxy(input$elid) %>%
+        imu_proxy("imu1") %>%
           imu_send_data(data = quat)
       }
     })
 
-    output$orientations <- renderImu_object(
+    output$imu1 <- renderImu_object(
       imu_object(quat0)
     )
   }
