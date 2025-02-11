@@ -96,8 +96,8 @@ is, of course, hardware dependent.</li>
 </li>
 <li>Call <code><a href="../reference/compUpdate.html">compUpdate()</a></code> to output a quaternion that
 represents the new orientation</li>
-<li>Call <code>imu_proxy()</code> and <code>imu_send_data()</code> to
-update the <code>imu_object()</code> widget with the quaternion</li>
+<li>Call <code><a href="../reference/imu_object-update.html">imu_proxy()</a></code> and <code><a href="../reference/imu_object-update.html">imu_send_data()</a></code> to
+update the <code><a href="../reference/imu_object.html">imu_object()</a></code> widget with the quaternion</li>
 </ul>
 <p>The code of a possible implementation is shown in the next section We
 will explain this implementation in the sections following that.</p>
@@ -180,7 +180,7 @@ will explain this implementation in the sections following that.</p>
 <span>    <span class="co">#</span></span>
 <span>    <span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton</a></span><span class="op">(</span><span class="st">"do"</span>, <span class="st">"Start animation"</span><span class="op">)</span>,</span>
-<span>      <span class="fu">imu_objectOutput</span><span class="op">(</span><span class="st">"imu1"</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="../reference/imu_object-shiny.html">imu_objectOutput</a></span><span class="op">(</span><span class="st">"imu1"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  </span>
 <span>    <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
@@ -195,13 +195,13 @@ will explain this implementation in the sections following that.</p>
 <span>        <span class="kw">while</span> <span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>          <span class="va">accgyr</span> <span class="op">&lt;-</span> <span class="fu">readFromSerial</span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
 <span>          <span class="va">quat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compUpdate.html">compUpdate</a></span><span class="op">(</span><span class="va">accgyr</span><span class="op">$</span><span class="va">acc</span>, <span class="va">accgyr</span><span class="op">$</span><span class="va">gyr</span>, dt <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">50</span>, initQ <span class="op">=</span> <span class="va">quat</span>, gain <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
-<span>          <span class="fu">imu_proxy</span><span class="op">(</span><span class="st">"imu1"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>            <span class="fu">imu_send_data</span><span class="op">(</span>data <span class="op">=</span> <span class="va">quat</span><span class="op">)</span></span>
+<span>          <span class="fu"><a href="../reference/imu_object-update.html">imu_proxy</a></span><span class="op">(</span><span class="st">"imu1"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>            <span class="fu"><a href="../reference/imu_object-update.html">imu_send_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">quat</span><span class="op">)</span></span>
 <span>        <span class="op">}</span></span>
 <span>      <span class="op">}</span><span class="op">)</span></span>
 <span>  </span>
-<span>      <span class="va">output</span><span class="op">$</span><span class="va">imu1</span> <span class="op">&lt;-</span> <span class="fu">renderImu_object</span><span class="op">(</span></span>
-<span>        <span class="fu">imu_object</span><span class="op">(</span><span class="va">quat0</span><span class="op">)</span></span>
+<span>      <span class="va">output</span><span class="op">$</span><span class="va">imu1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/imu_object-shiny.html">renderImu_object</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/imu_object.html">imu_object</a></span><span class="op">(</span><span class="va">quat0</span><span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">}</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span>
@@ -214,9 +214,10 @@ will explain this implementation in the sections following that.</p>
 <p>The goal of this step is to read the IMU data from a serial port,
 validate it, and package it so it can be used as input to
 <code><a href="../reference/compUpdate.html">compUpdate()</a></code>.</p>
-<p>We first use [serial::serialConnection()] to set up a serial port
-connection. We then enter into a loop to check if there is data and if
-so, whether it meets certain requirements.</p>
+<p>We first use the <a href="https://cran.r-project.org/web/packages/serial/index.html" class="external-link">serial
+package</a> to set up a serial port connection. We then enter into a
+loop to check if there is data and if so, whether it meets certain
+requirements.</p>
 <p>Once we confirm the data is legit, we exit the loop and proceed to
 package the IMU measurements into a list of two vectors: a numeric
 vector for the 3 accelerometer readings and another numeric vector for
@@ -246,9 +247,9 @@ the initial orientation of the current iteration.</p>
 </h2>
 <p>The last step is to update animation with the newly calculated
 rotation quaternion. We accomplish this by calling
-<code>imu_proxy()</code> and <code>imu_send_data()</code> in succession.
-Note that the input to <code>imu_proxy()</code> is the output id of the
-rendered <code>imu_object()</code>.</p>
+<code><a href="../reference/imu_object-update.html">imu_proxy()</a></code> and <code><a href="../reference/imu_object-update.html">imu_send_data()</a></code> in succession.
+Note that the input to <code><a href="../reference/imu_object-update.html">imu_proxy()</a></code> is the output id of the
+rendered <code><a href="../reference/imu_object.html">imu_object()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="section-visualization">Visualization<a class="anchor" aria-label="anchor" href="#section-visualization"></a>
