@@ -2,6 +2,11 @@
 #'
 #' Create in real time animated movements of an inertial measurement unit in shiny
 #'
+#' @param data A \code{vector} of numeric 4-vectors each of which a unit quaternion (w,x,y,z)
+#' @param width,height  width and height of imu_object htmlwidget
+#'          specified in any valid \code{CSS} size unit
+#' @param elementId \code{string} id as a valid \code{CSS} element id.
+#'
 #' @import htmlwidgets
 #'
 #' @export
@@ -71,7 +76,7 @@ imu_proxy <- function(id, session = shiny::getDefaultReactiveDomain()) {
   list(id = id, session = session)
 }
 
-#'@rdname imu_object-update
+#' @rdname imu_object-update
 #' @export
 imu_send_data <- function(proxy, data) {
   message <- list(id = proxy$id, data = data)
