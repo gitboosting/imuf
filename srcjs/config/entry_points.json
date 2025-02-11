@@ -1,3 +1,4 @@
 {
-  "animate_imu": "./srcjs/widgets/animate_imu.js"
+  "animate_imu": "./srcjs/widgets/animate_imu.js",
+  "imu_object": "./srcjs/widgets/imu_object.js"
 }
