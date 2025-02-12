@@ -140,7 +140,7 @@ if (interactive()) {
 
 The goal of this step is to read the IMU data from a serial port, validate it, and package it so it can be used as input to `compUpdate()`.
 
-We first use the [serial package](https://cran.r-project.org/web/packages/serial/index.html) to set up a serial port connection. We then enter into a loop to check if there is data and if so, whether it meets certain requirements.
+We first use the serial package to set up a serial port connection. We then enter into a loop to check if there is data and if so, whether it meets certain requirements.
 
 Once we confirm the data is legit, we exit the loop and proceed to package the IMU measurements into a list of two vectors: a numeric vector for the 3 accelerometer readings and another numeric vector for the 3 gyroscope readings. We take care to transform the data so it conforms to what `compUpdate()` expects. First, we transform the data from IMU's coordinate system to the north-east-down (NED) convention `compUpdate()` expects. Second, we convert the gyroscope readings from deg/sec to rad/sec again expected by `compUpdate()`. Whether these transformations are necessary depends on the IMU hardware and firmware you use.
 
