@@ -42,6 +42,7 @@ if (interactive()) {
   library(shiny)
   library(serial)
   library(imuf)
+  library(stringr)
 
   getCon <- function(port) {
     #
@@ -103,12 +104,6 @@ if (interactive()) {
   }
   
   runshiny <- function(port) {
-    if (!requireNamespace("serial", quietly = TRUE)) {
-      stop(
-        "Package \"serial\" must be installed to use this function.",
-        call. = FALSE
-      )
-    }
     #
     ui = fluidPage(
       actionButton("do", "Start animation"),
