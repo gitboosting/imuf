@@ -110,6 +110,7 @@ will explain this implementation in the sections following that.</p>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">serial</span><span class="op">)</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gitboosting/imuf" class="external-link">imuf</a></span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">getCon</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">port</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co">#</span></span>
@@ -144,7 +145,7 @@ will explain this implementation in the sections following that.</p>
 <span>      <span class="co">#</span></span>
 <span>      <span class="co"># data from the IMU is a row of 6 comma-separated floats:</span></span>
 <span>      <span class="co"># accx, accy, accz, gyrx, gyry, gyrz</span></span>
-<span>      <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu">str_split_1</span><span class="op">(</span><span class="va">x</span>, <span class="st">","</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>      <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html" class="external-link">str_split_1</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">","</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/trimws.html" class="external-link">trimws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -171,12 +172,6 @@ will explain this implementation in the sections following that.</p>
 <span>  <span class="op">}</span></span>
 <span>  </span>
 <span>  <span class="va">runshiny</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">port</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"serial"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span></span>
-<span>        <span class="st">"Package \"serial\" must be installed to use this function."</span>,</span>
-<span>        call. <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
 <span>    <span class="co">#</span></span>
 <span>    <span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton</a></span><span class="op">(</span><span class="st">"do"</span>, <span class="st">"Start animation"</span><span class="op">)</span>,</span>
@@ -214,10 +209,9 @@ will explain this implementation in the sections following that.</p>
 <p>The goal of this step is to read the IMU data from a serial port,
 validate it, and package it so it can be used as input to
 <code><a href="../reference/compUpdate.html">compUpdate()</a></code>.</p>
-<p>We first use the <a href="https://cran.r-project.org/web/packages/serial/index.html" class="external-link">serial
-package</a> to set up a serial port connection. We then enter into a
-loop to check if there is data and if so, whether it meets certain
-requirements.</p>
+<p>We first use the serial package to set up a serial port connection.
+We then enter into a loop to check if there is data and if so, whether
+it meets certain requirements.</p>
 <p>Once we confirm the data is legit, we exit the loop and proceed to
 package the IMU measurements into a list of two vectors: a numeric
 vector for the 3 accelerometer readings and another numeric vector for
