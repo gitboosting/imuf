@@ -1,6 +1,6 @@
 Package: imuf
 Title: Estimate Orientation of an Inertial Measurement Unit
-Version: 0.5.1.9000
+Version: 0.6.0
 Authors@R: c(
     person("Felix", "Chan", , "chanfelix@gmail.com", role = c("aut", "cre", "cph")),
     person("Ricardo", "Cabello", role = "cph", comment = "'three.js' JavaScript library")
