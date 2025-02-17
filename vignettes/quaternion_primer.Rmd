@@ -17,15 +17,16 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(imuf)
 library(RSpincalc)
+library(pracma)
 ```
 
 ## Introduction
 
-The imuf package uses the mathematics of quaternions to analyze the data from an inertial measurement unit (IMU) and to track its orientation in 3D. To use the imuf package,it is helpful to understand what quaternions are and how they operate as vectors and rotations.
+The imuf package uses the mathematics of quaternions to analyze the data from an inertial measurement unit (IMU) and to track its orientation in 3D. To use the imuf package, it is helpful to understand what quaternions are and how they operate as vectors and rotations.
 
 ## What is a quaternion?
 
-A quaternion is a 4-componment mathematical object $q = q_{w} + i q_{x} + j q_{y} + k q_{z}$ with a scalar component $q_{w}$ and a vector component $(q_{x}, q_{y}, q_{z})$. The quaternion units $i, j, k$ are analogus to the imaginary unit $i = \sqrt{-1}$ in complex numbers, except that in quaternions there are three units and they obey the following relationships:
+A quaternion is a 4-componment mathematical object $q = q_{w} + i q_{x} + j q_{y} + k q_{z}$ with a scalar component $q_{w}$ and a vector component $(q_{x}, q_{y}, q_{z})$. The quaternion units $i, j, k$ are analogous to the imaginary unit $i = \sqrt{-1}$ in complex numbers, except that in quaternions there are three units and they obey the following relationships:
 
 $i^2 = j^2 = k^2 = i j k = -1$
 
@@ -35,7 +36,7 @@ $k i = - i k = j$
 
 $j k = - k j = i$
 
-Quaternion algebra is similar to complex number algebra, but with the added complications of quaternions having four components and the quaternion units needing to obey a more extensive set of rules as stated above.
+Quaternion algebra is similar to complex number algebra, but with the added complications of having four components and the quaternion units needing to obey a more extensive set of rules as stated above.
 
 It's important to note that in a multiplication, order matters. Quaternions generally do not commute: $q_{1} q_{2} \neq q_{2} q_{1}$. 
 
@@ -69,7 +70,7 @@ The conjugate of a quaternion is $q^* = q_{w} - i q_{x} - j q_{y} - k q_{z}$. Fo
 
 ### Rotating a vector
 
-One can rotate a vector quaternion $q_{u}$ by a rotation quaternion $q$ using the following transformation:
+One can rotate a vector, represented by a vector quaternion $q_{u}$, by a rotation, represented by a rotation quaternion $q$, using the following transformation:
 
 $q'_{u} = q q_{u} q^*$
 
@@ -113,4 +114,43 @@ qu_rotated <- q2 %Q*% qu_rotated %Q*% q2conj
 qu_rotated    # this vector quaternion is different from the one in the previous section
 ```
 
-## 
+### Cross product and dot product
+
+[Cross product](https://en.wikipedia.org/wiki/Cross_product) and [dot product](https://en.wikipedia.org/wiki/Dot_product) are useful vector operations that can be easily done with quaternions. When we multiple two vector quaternions, the scalar component of the resulting quaternion is the negative dot product and the vector component is the cross product:
+
+$q_{a} = 0 + i a_{x} + j a_{y} + k a_{z}$
+
+$q_{b} = 0 + i b_{x} + j b_{y} + k b_{z}$
+
+$q_{a} q_{b} = q_{c} = c_{w} + i c_{x} + j c_{y} + k c_{z}$
+
+$c_{w} = -1 \times (a_{x}, a_{y}, a_{z}) \cdot (b_{x}, b_{y}, b_{z})$
+
+$(c_{x}, c_{y}, c_{z}) = (a_{x}, a_{y}, a_{z}) \times (b_{x}, b_{y}, b_{z})$
+
+Let's quickly verify these with a concrete example:
+
+```{r}
+qa <- c(0, 1, 2, 3)   # some arbitrary vector
+qb <- c(0, 4, 5, 6)   # another arbitrary vector
+#
+(qc <- qa %Q*% qb)      # quaternion product
+#
+# dot and cross product the normal way
+(a_dot_b <- qa[2:4] %*% qb[2:4])
+#
+(a_cross_b <- cross(qa[2:4], qb[2:4]))
+#
+# scalar of quaternion == negative dot product
+# vector of quaternion == cross product
+qc[1] == -1* a_dot_b
+qc[2:4] == a_cross_b
+```
+
+## More quaternion operations
+
+Now that we are familiar with the basic characteristics of quaternions and their relations to 3-vectors and rotations in 3D, let's delve into some quaternion operations that are relevant in sensor fusion.
+
+### Finding a rotation that rotates one vector into another
+
+There i
