@@ -149,8 +149,34 @@ qc[2:4] == a_cross_b
 
 ## More quaternion operations
 
-Now that we are familiar with the basic characteristics of quaternions and their relations to 3-vectors and rotations in 3D, let's delve into some quaternion operations that are relevant in sensor fusion.
+Now that we are familiar with the basic characteristics of quaternions and their relations to 3-vectors and 3D rotations, let's delve into some quaternion operations that are relevant in sensor fusion.
 
-### Finding a rotation that rotates one vector into another
+### Finding a rotation that rotates a unit vector into another
 
-There i
+Say we want to rotate a unit vector $a = (a_{x}, a_{y}, a_{z})$ into a unit vector $b = (b_{x}, b_{y}, b_{z})$. Represented in quaternions, vectors a and b become $q_{a} = (0, a_{x}, a_{y}, a_{z})$ and $q_{b} = (0, b_{x}, b_{y}, b_{z})$. The objective is to find a rotation quaternion $q$ such that $q_{b} = q q_{a} q^*$.
+
+The rotation we seek has an axis of rotation $n$ that is perpendicular to $a$ and $b$, and an angle of rotation $\theta$ that is the angle between $a$ and $b$. $n$ is given by the cross product of $a$ and $b$, and $\theta$ can be derived from the dot product of $a$ and $b$. Both of these can be read off from $q_{a} q_{b} = (- a \cdot b, a \times b)$. The angle of rotation $\theta$ is $cos^{-1}(a \cdot b)$.
+
+Let's verify these with a concrete example:
+
+```{r}
+a <- c(1, 2, 3); (a <- a / Norm(a))
+b <- c(4, 5, 7); (b <- b / Norm(b))
+(qa <- c(0, a))
+(qb <- c(0, b))
+#
+(qaqb <- qa %Q*% qb)
+(a_dot_b <- -1 * qaqb[1])
+(a_cross_b <- qaqb[2:4])
+#
+(n <- a_cross_b / Norm(a_cross_b))
+(theta <- acos(a_dot_b))
+(half_theta <- theta/2)
+#
+# rotation quaternion
+(q <- c(cos(half_theta), sin(half_theta) * n))
+#
+# verification
+(qb_expected <- q %Q*% qa %Q*% RSpincalc::Qconj(q))
+qb == qb_expected
+```
