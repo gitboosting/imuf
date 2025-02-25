@@ -177,6 +177,39 @@ b <- c(4, 5, 7); (b <- b / Norm(b))
 (q <- c(cos(half_theta), sin(half_theta) * n))
 #
 # verification
-(qb_expected <- q %Q*% qa %Q*% RSpincalc::Qconj(q))
-qb == qb_expected
+(qb_expected <- q %Q*% qa %Q*% Qconj(q))
+round(qb, 8) == round(qb_expected, 8)
+```
+
+### Angular distance between 2 orientations
+
+Given two orientations how do we quantify how close they are? 
+
+Suppose we have two orientations represented by rotation quaternions $q_{a}$ and $q_{b}$. We can apply a third quaternion $q_{c}$ on $q_{a}$ so that $q_{c} q_{a} = q_{b}$. $q_{c}$ is the extra bit of rotation required to align $q_{a}$ with $q_{b}$.
+
+$q_{c} = q_{b} q_{a}^*$
+
+The rotation angle of $q_{c}$ is the "angular distance" between $q_{a}$ and $q_{b}$. It quantifies the closeness between the two orientations. The angle is twice the arccosine of the scalar componment of $q_{c}$.
+
+$\theta_{c} = 2 \times acos(q_{c}[1])$
+
+Let's look at a concrete example:
+
+```{r}
+# some arbitrary orientations
+(qa <- c(cosd(25), sind(25) * c(1, 1, 1)/Norm(c(1, 1, 1))))
+(qb <- c(cosd(35), sind(35) * c(-1, -2, 3)/Norm(c(-1, -2, 3))))
+#
+# quaternion needed to align qa and qb
+(qc <- qb %Q*% Qconj(qa))
+#
+# rotation angle of qc
+(qc_angle <- 2 * acos(qc[1]))
+#
+# verify with the library function RSpincalc::QangularDifference
+q1 <- qa %Q*% Qone()
+q2 <- qb %Q*% Qone()
+(qc_expected <- 2 * QangularDifference(q1, q2))
+#
+(round(qc_angle, 8) == round(qc_expected, 8))
 ```
