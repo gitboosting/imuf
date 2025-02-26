@@ -22,7 +22,7 @@ library(pracma)
 
 ## Introduction
 
-The imuf package uses the mathematics of quaternions to analyze the data from an inertial measurement unit (IMU) and to track its orientation in 3D. To use the imuf package, it is helpful to understand what quaternions are and how they operate as vectors and rotations.
+The imuf package uses the mathematics of quaternions to analyze the data from an inertial measurement unit (IMU) and to track its orientation in 3D. To use the package, it is helpful to understand what quaternions are and how they operate as vectors and rotations.
 
 ## What is a quaternion?
 
@@ -46,13 +46,13 @@ A quaternion can represent a rotation or a vector.
 
 ### Rotation quaternions
 
-A rotation $\theta$ around an axis $\mathbf{v} = (v_{x}, v_{y}, v_{z})$ with unit-length $\sqrt{v_{x}^2 + v_{y}^2 + v_{z}^2} = 1$ can be represented by a rotation quaternion:
+A rotation of angle $\theta$ around an axis $\mathbf{v} = (v_{x}, v_{y}, v_{z})$ with a unit length $\sqrt{v_{x}^2 + v_{y}^2 + v_{z}^2} = 1$ can be represented by a rotation quaternion:
 
 $q(\theta, \mathbf{v}) = cos(\frac{\theta}{2}) + sin(\frac{\theta}{2}) (i v_{x} + j v_{y} + k v_{z})$
 
 The relation between the quaternion components and the axis-angle representation is:
 
-$\begin{bmatrix} q_{w} \\ q_{x} \\ q_{y} \\ q_{z}  \end{bmatrix} = \begin{bmatrix} cos(\theta/2) \\ v_{x} sin(\theta/2) \\ v_{y} sin(\theta/2) \\ v_{z} sin(\theta/2) \end{bmatrix}$
+$\begin{bmatrix} q_{w} \\ q_{x} \\ q_{y} \\ q_{z}  \end{bmatrix} = \begin{bmatrix} cos(\theta/2) \\ v_{x} sin(\theta/2) \\ v_{y} sin(\theta/2) \\ v_{z} sin(\theta/2) \end{bmatrix} = \begin{bmatrix}cos(\theta/2) \\ \mathbf{v} sin(\theta/2)\end{bmatrix}$
 
 Rotation quaternions have unit length: $\sqrt{q_{w}^2 + q_{x}^2 + q_{y}^2 + q_{z}^2)} = 1$. After an numerical operation it may be necessary to re-normalize a rotation quaternion to unit length.
 
@@ -60,13 +60,13 @@ Rotation quaternions have unit length: $\sqrt{q_{w}^2 + q_{x}^2 + q_{y}^2 + q_{z
 
 A quaternion representing a vector $\mathbf{u} = (u_{x}, u_{y}, u_{z})$ has a zero scalar part:
 
-$q_{u} = 0 + i u_{x} + j u_{y} + k u_{z}$
+$q_{u} = 0 + i u_{x} + j u_{y} + k u_{z} = \begin{bmatrix} 0 \\ \mathbf{u} \end{bmatrix}$
 
-Unlike a rotation quaternion which has a unit length, a vector quaternion can have an arbitarty length.
+Unlike a rotation quaternion which has a unit length, a vector quaternion can have an arbitrary length.
 
 ### Conjugate
 
-The conjugate of a quaternion is $q^* = q_{w} - i q_{x} - j q_{y} - k q_{z}$. For a rotation quaternion, its conjugate represents a rotation in the opposite direction. For a vector quaternion, its conjugate represents a vector pointing in the opposite direction.
+The conjugate of a quaternion is $q^* = q_{w} - i q_{x} - j q_{y} - k q_{z}$. Conjugate of a rotation quaternion represents a rotation in the opposite direction. Conjugate of a vector quaternion represents a vector pointing in the opposite direction.
 
 ### Rotating a vector
 
@@ -74,13 +74,15 @@ One can rotate a vector, represented by a vector quaternion $q_{u}$, by a rotati
 
 $q'_{u} = q q_{u} q^*$
 
-The resulting vector quaternion $q'_{u}$ represents the rotated vector. For example, rotating a vector of length 2 along the y-axis about the x-axis by 90 degrees or $\pi$/2 would result in a vector of length 2 along the z-axis:
+The resulting vector quaternion $q'_{u}$ represents the rotated vector. 
+
+For example, rotating a vector of length 2 along the y-axis about the x-axis by 90 degrees or $\pi$/2 results in a vector of length 2 along the z-axis:
 
 ```{r}
 qu <- c(0, 0, 2, 0)   # quaternion of a vector of length 2 along the y-axis
 angle <- pi/2
 q <- c(cos(angle/2), sin(angle/2), 0, 0)   # quaternion of a rotation about the x-axis by pi/2
-qconj <- RSpincalc::Qconj(q)    # conjugate of the rotation quaternion
+qconj <- Qconj(q)    # conjugate of the rotation quaternion
 #
 qu_rotated <- q %Q*% qu %Q*% qconj
 qu_rotated
@@ -92,7 +94,7 @@ Another rotation about the z-axis leaves the vector unchanged:
 qu <- qu_rotated   # start with the rotated vector from previous step
 angle <- pi/2
 q <- c(cos(angle/2), 0, 0, sin(angle/2))   # quaternion of a rotation about the z-axis by pi/2
-qconj <- RSpincalc::Qconj(q)    # conjugate of the rotation quaternion
+qconj <- Qconj(q)    # conjugate of the rotation quaternion
 #
 qu_rotated <- q %Q*% qu %Q*% qconj
 qu_rotated
@@ -105,8 +107,8 @@ qu <- c(0, 0, 2, 0)   # start with a vector of length 2 along the y-axis
 angle <- pi/2
 q1 <- c(cos(angle/2), 0, 0, sin(angle/2))   # rotation about the z-axis by pi/2
 q2 <- c(cos(angle/2), sin(angle/2), 0, 0)   # rotation about the x-axis by pi/2
-q1conj <- RSpincalc::Qconj(q1)    # conjugate of q1
-q2conj <- RSpincalc::Qconj(q2)    # conjugate of q2
+q1conj <- Qconj(q1)    # conjugate of q1
+q2conj <- Qconj(q2)    # conjugate of q2
 #
 qu_rotated <- q1 %Q*% qu %Q*% q1conj
 qu_rotated <- q2 %Q*% qu_rotated %Q*% q2conj
@@ -116,7 +118,7 @@ qu_rotated    # this vector quaternion is different from the one in the previous
 
 ### Cross product and dot product
 
-[Cross product](https://en.wikipedia.org/wiki/Cross_product) and [dot product](https://en.wikipedia.org/wiki/Dot_product) are useful vector operations that can be easily done with quaternions. When we multiple two vector quaternions, the scalar component of the resulting quaternion is the negative dot product and the vector component is the cross product:
+[Cross product](https://en.wikipedia.org/wiki/Cross_product) and [dot product](https://en.wikipedia.org/wiki/Dot_product) are useful vector operations that can be performed by quaternions. When we multiply two vector quaternions, the scalar component of the resulting quaternion is the negative dot product and the vector component the cross product:
 
 $q_{a} = 0 + i a_{x} + j a_{y} + k a_{z}$
 
@@ -124,9 +126,13 @@ $q_{b} = 0 + i b_{x} + j b_{y} + k b_{z}$
 
 $q_{a} q_{b} = q_{c} = c_{w} + i c_{x} + j c_{y} + k c_{z}$
 
-$c_{w} = -1 \times (a_{x}, a_{y}, a_{z}) \cdot (b_{x}, b_{y}, b_{z})$
+$c_{w} = - (a_{x}, a_{y}, a_{z}) \cdot (b_{x}, b_{y}, b_{z})$
 
 $(c_{x}, c_{y}, c_{z}) = (a_{x}, a_{y}, a_{z}) \times (b_{x}, b_{y}, b_{z})$
+
+More succinctly,
+
+$q_{a} q_{b} = \begin{bmatrix} -\mathbf{a} \cdot \mathbf{b} \\ \mathbf{a} \times \mathbf{b} \end{bmatrix}$
 
 Let's quickly verify these with a concrete example:
 
@@ -153,9 +159,9 @@ Now that we are familiar with the basic characteristics of quaternions and their
 
 ### Finding a rotation that rotates a unit vector into another
 
-Say we want to rotate a unit vector $a = (a_{x}, a_{y}, a_{z})$ into a unit vector $b = (b_{x}, b_{y}, b_{z})$. Represented in quaternions, vectors a and b become $q_{a} = (0, a_{x}, a_{y}, a_{z})$ and $q_{b} = (0, b_{x}, b_{y}, b_{z})$. The objective is to find a rotation quaternion $q$ such that $q_{b} = q q_{a} q^*$.
+Say we want to rotate a unit vector $\mathbf{a} = (a_{x}, a_{y}, a_{z})$ into another unit vector $\mathbf{b} = (b_{x}, b_{y}, b_{z})$. Represented in quaternions, vectors $\mathbf{a}$ and $\mathbf{b}$ become $q_{a} = (0, a_{x}, a_{y}, a_{z})$ and $q_{b} = (0, b_{x}, b_{y}, b_{z})$. The objective is to find a rotation quaternion $q$ such that $q_{b} = q q_{a} q^*$.
 
-The rotation we seek has an axis of rotation $n$ that is perpendicular to $a$ and $b$, and an angle of rotation $\theta$ that is the angle between $a$ and $b$. $n$ is given by the cross product of $a$ and $b$, and $\theta$ can be derived from the dot product of $a$ and $b$. Both of these can be read off from $q_{a} q_{b} = (- a \cdot b, a \times b)$. The angle of rotation $\theta$ is $cos^{-1}(a \cdot b)$.
+The rotation we seek has an axis of rotation $\mathbf{n}$ that is perpendicular to $\mathbf{a}$ and $\mathbf{b}$, and an angle of rotation $\theta$ that is the angle between $\mathbf{a}$ and $\mathbf{b}$. $\mathbf{n}$ is given by the cross product of $\mathbf{a}$ and $\mathbf{b}$, and $\theta$ can be derived from the dot product of $\mathbf{a}$ and $\mathbf{b}$. Both of these can be read off from $q_{a} q_{b} = (- \mathbf{a} \cdot \mathbf{b}, \mathbf{a} \times \mathbf{b})$. The angle of rotation $\theta$ is $cos^{-1}(\mathbf{a} \cdot \mathbf{b})$.
 
 Let's verify these with a concrete example:
 
@@ -185,7 +191,9 @@ round(qb, 8) == round(qb_expected, 8)
 
 Given two orientations how do we quantify how close they are? 
 
-Suppose we have two orientations represented by rotation quaternions $q_{a}$ and $q_{b}$. We can apply a third quaternion $q_{c}$ on $q_{a}$ so that $q_{c} q_{a} = q_{b}$. $q_{c}$ is the extra bit of rotation required to align $q_{a}$ with $q_{b}$.
+Suppose we have two orientations represented by rotation quaternions $q_{a}$ and $q_{b}$. We can apply a third quaternion $q_{c}$ on $q_{a}$ so that $q_{c} q_{a} = q_{b}$. 
+
+$q_{c}$ is the extra bit of rotation required to align $q_{a}$ with $q_{b}$.
 
 $q_{c} = q_{b} q_{a}^*$
 
