@@ -3,15 +3,7 @@
 0 errors | 0 warnings | 1 notes
 
 * checking installed package size ... NOTE
-    installed size is  5.6Mb
+    installed size is  7.2Mb
     sub-directories of 1Mb or more:
-      doc    3.1Mb
+      doc    4.1Mb
       libs   1.0Mb
-
-## This is a submission to address a build error:
-
-* Check: for detritus in the temp directory
-Result: NOTE 
-  Found the following files/directories:
-    ‘Crashpad’
-Flavor: r-devel-linux-x86_64-fedora-gcc
