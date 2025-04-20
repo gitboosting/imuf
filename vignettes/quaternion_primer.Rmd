@@ -38,7 +38,7 @@ $j k = - k j = i$
 
 Quaternion algebra is similar to complex number algebra, but with the added complications of having four components and the quaternion units needing to obey a more extensive set of rules as stated above.
 
-It's important to note that in a multiplication, order matters. Quaternions generally do not commute: $q_{1} q_{2} \neq q_{2} q_{1}$. 
+It's important to note that in a multiplication, order matters. Quaternions generally do not commute: $q_{1} q_{2} \neq q_{2} q_{1}$.
 
 ## Quaternions as rotations and vectors
 
@@ -74,7 +74,7 @@ One can rotate a vector, represented by a vector quaternion $q_{u}$, by a rotati
 
 $q'_{u} = q q_{u} q^*$
 
-The resulting vector quaternion $q'_{u}$ represents the rotated vector. 
+The resulting vector quaternion $q'_{u}$ represents the rotated vector.
 
 For example, rotating a vector of length 2 along the y-axis about the x-axis by 90 degrees or $\pi$/2 results in a vector of length 2 along the z-axis:
 
@@ -189,9 +189,9 @@ round(qb, 8) == round(qb_expected, 8)
 
 ### Angular distance between 2 orientations
 
-Given two orientations how do we quantify how close they are? 
+Given two orientations how do we quantify how close they are?
 
-Suppose we have two orientations represented by rotation quaternions $q_{a}$ and $q_{b}$. We can apply a third quaternion $q_{c}$ on $q_{a}$ so that $q_{c} q_{a} = q_{b}$. 
+Suppose we have two orientations represented by rotation quaternions $q_{a}$ and $q_{b}$. We can apply a third quaternion $q_{c}$ on $q_{a}$ so that $q_{c} q_{a} = q_{b}$.
 
 $q_{c}$ is the extra bit of rotation required to align $q_{a}$ with $q_{b}$.
 

@@ -1,0 +1,44 @@
+---
+title: "A primer on sensor_fusion"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A primer on sensor_fusion}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(imuf)
+library(RSpincalc)
+library(pracma)
+```
+
+## Introduction
+
+The imuf package uses a complementary filter to 'fuse' the measurements from an accelerometer and a gyroscope to compute the orientation of an inertial measurement unit (IMU). This note describe the techniques behind such computation. It uses the mathematics of quaternions described in `vignette("quaternion_primer")`.
+
+The techniques involve two steps:
+
+1. Get an estimate of the orientation by solving the Euler Kinematics Equation using the gyrosope measurements
+2. Correct the initial estimate using the acceleromter measurements to arrive at the final orientation
+
+## The Euler Kinematics Equation
+
+The Euler Kinematics Equation describes the relationship between the rate of change of the orientation of an object, the object's current orientation, and the angular velocity with respect to the body-fixed frame.
+
+$\dot{q} = \frac{1}{2} q \omega$
+
+where
+
+$q$ is the orientation expressed as a rotation quaternion
+
+$\dot{q} = \frac{dq}{dt}$ is the rate of change of the orientation
+
+$\omega$ = $[0, \omega_{x}, \omega_{y}, \omega_{z}]$ is the angular velocity in body-fixed frame expressed as a vector quaternion
